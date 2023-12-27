@@ -11,6 +11,7 @@ psycopg2-binary = "^2.9.9"
 sqlalchemy = "^2.0.23"
 fastapi = "^0.106.0"
 python-dotenv = "^1.0.0"
+uvicorn = "^0.25.0"
 
 
 [tool.poetry.group.dev.dependencies]
