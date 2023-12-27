@@ -14,11 +14,11 @@ RUN pip install poetry
 COPY Makefile /opt/app/
 
 # Copy only requirements to cache them in docker layer
-COPY pyproject.toml poetry.lock src/homework tests ./
+COPY pyproject.toml poetry.lock src tests ./
 
 # Project initialization:
 RUN poetry config virtualenvs.create false \
     && poetry install
 
 # Application entrypoint
-CMD ["uvicorn", "server.asgi:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "src.homework.asgi:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

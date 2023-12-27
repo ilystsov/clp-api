@@ -8,7 +8,7 @@ WORKDIR /opt/build
 RUN pip install poetry
 
 # Copy only requirements to cache them in docker layer
-COPY pyproject.toml poetry.lock src/homework config ./
+COPY pyproject.toml poetry.lock src ./
 
 # Project initialization:
 RUN poetry config virtualenvs.create false \
@@ -22,7 +22,7 @@ WORKDIR /opt/app
 # Copy only the relevant files from the builder
 COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
-COPY src/homework /opt/app/
+COPY src /opt/app/src
 
 # Application entrypoint
-CMD ["uvicorn", "server.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.homework.asgi:app", "--host", "0.0.0.0", "--port", "8000"]
