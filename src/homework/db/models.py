@@ -8,16 +8,16 @@ class Base(orm.DeclarativeBase):
     pass
 
 
-class Applications(Base):
+class Application(Base):
     __tablename__ = "applications"
     app_id: orm.Mapped[sqlalchemy.UUID] = orm.mapped_column(
-        sqlalchemy.UUID, primary_key=True
+        sqlalchemy.UUID(as_uuid=True), primary_key=True
     )
     app_name: orm.Mapped[str] = orm.mapped_column(sqlalchemy.String(30))
     token: orm.Mapped[str] = orm.mapped_column(sqlalchemy.Text)
 
 
-class Users(Base):
+class User(Base):
     __tablename__ = "users"
     user_id: orm.Mapped[int] = orm.mapped_column(
         sqlalchemy.Integer, primary_key=True
@@ -26,10 +26,10 @@ class Users(Base):
     num_of_deleted_orders: orm.Mapped[int] = orm.mapped_column(
         sqlalchemy.Integer
     )
-    orders: orm.Mapped[typing.List["Orders"]] = orm.relationship()
+    orders: orm.Mapped[typing.List["Order"]] = orm.relationship()
 
 
-class Orders(Base):
+class Order(Base):
     __tablename__ = "orders"
     order_id: orm.Mapped[int] = orm.mapped_column(
         sqlalchemy.Integer, primary_key=True
@@ -38,4 +38,4 @@ class Orders(Base):
         sqlalchemy.ForeignKey("users.user_id")
     )
     total_cost: orm.Mapped[int] = orm.mapped_column(sqlalchemy.Integer)
-    completed_ar: orm.Mapped[int] = orm.mapped_column(sqlalchemy.Integer)
+    completed_at: orm.Mapped[int] = orm.mapped_column(sqlalchemy.Integer)
