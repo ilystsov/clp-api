@@ -14,7 +14,7 @@ class Application(Base):
         sqlalchemy.UUID(as_uuid=True), primary_key=True
     )
     app_name: orm.Mapped[str] = orm.mapped_column(sqlalchemy.String(30))
-    token: orm.Mapped[str] = orm.mapped_column(sqlalchemy.Text)
+    secret: orm.Mapped[str] = orm.mapped_column(sqlalchemy.String(64))
 
 
 class User(Base):
