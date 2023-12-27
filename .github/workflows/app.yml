@@ -63,7 +63,7 @@ jobs:
           poetry install --no-root
       - name: Build image
         run: |
-          docker-compose build tests
+          docker build -t tests -f docker/tests/Dockerfile .
       - name: Run tests
         run: |
-          docker-compose run tests make test
+          docker run --rm tests make test
