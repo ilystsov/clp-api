@@ -3,7 +3,7 @@ Contracts described in CLP API Routes and Contracts specification.
 """
 
 from enum import Enum
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class AccessLevel(Enum):
@@ -12,7 +12,7 @@ class AccessLevel(Enum):
 
 
 class CreateApplicationRequest(BaseModel):
-    application_name: str
+    application_name: str = Field(max_length=30)
     access_level: AccessLevel
 
 
