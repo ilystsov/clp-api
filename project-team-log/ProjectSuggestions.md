@@ -9,24 +9,24 @@ CLP API maintains various access levels for different applications, which enhanc
 3. On creation, applications receive an AppID and a token for future authentication.
 4. Applications with `Can_Read` access level can:
    1. Request the customer's balance by sending a GET request with the URL parameter:
-      1. UserID - int
+      1. user_id - int
 5. Applications with `Can_Modify_Orders` access level can:
    1. Insert an order into order history by sending a POST request and modify current loyalty program balance with the following structure:
-      1. UserID - int
-      2. OrderID - int
-      3. TotalCost - int
-      4. CompletedAt - int (timestamp)
+      1. user_id - int
+      2. order_id - int
+      3. total_cost - int
+      4. completed_at - int (timestamp)
    2. Delete an order by sending a DELETE request with the following structure:
-      1. OrderID - int
+      1. order_id - int
 6. Application with `MasterApp` access level can:
    1. Create a new application by sending a POST request with the following structure:
-      1. ApplicationName - str (30 characters)
-      2. AccessLevel - str (Enum[`Can_Read`, `Can_Modify_Orders`])
+      1. application_name - str (30 characters)
+      2. access_level - Enum[`Can_Read`, `Can_Modify_Orders`]
    2. Update application's access level by sending a PUT request with:
-      1. AppID - str (returned when created)
-      2. NewAccessLevel - str (Enum[`Can_Read`, `Can_Modify_Orders`])
+      1. app_id - str (returned when created)
+      2. new_access_level - Enum[`Can_Read`, `Can_Modify_Orders`]
    3. Delete the application by sending a DELETE request with:
-      1. AppID - str (returned when created)
+      1. app_id - str (returned when created)
 ### 3. Microservice logic
 Microservice processes information about the order and depending on the TotalCost adds some number of points to the customer's balance.
 ```math
