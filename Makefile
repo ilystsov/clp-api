@@ -10,7 +10,7 @@ format:
 	poetry run black --line-length 79 .
 
 lint:
-	poetry run black --check $(CODE_FOLDERS) $(TEST_FOLDERS)
+	poetry run black --line-length 79 --check $(CODE_FOLDERS) $(TEST_FOLDERS)
 	poetry run flake8 $(CODE_FOLDERS) $(TEST_FOLDERS)
 	poetry run ruff check $(CODE_FOLDERS) $(TEST_FOLDERS)
 
