@@ -50,17 +50,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-      - name: Install and configure Poetry
-        uses: snok/install-poetry@v1
-        with:
-          virtualenvs-create: false
-      - name: Install dependencies
-        run: |
-          poetry install --no-root
       - name: Build image
         run: |
           docker build -t tests -f docker/tests/Dockerfile .
