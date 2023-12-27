@@ -17,8 +17,7 @@ CLP API maintains various access levels for different applications, which enhanc
       3. TotalCost - int
       4. CompletedAt - int (timestamp)
    2. Delete an order by sending a DELETE request with the following structure:
-      1. UserID - int
-      2. OrderID - int
+      1. OrderID - int
 6. Application with `MasterApp` access level can:
    1. Create a new application by sending a POST request with the following structure:
       1. ApplicationName - str (30 characters)
