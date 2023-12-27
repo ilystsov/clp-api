@@ -4,8 +4,11 @@ import enum
 import jwt
 import base64
 import json
+
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
+from fastapi import Header, HTTPException
+
 from src.homework.api.contracts import AccessLevel
 from src.homework.db.engine import get_postgres_db_url
 from src.homework.db.models import Application
@@ -48,7 +51,7 @@ def get_app_by_id(
 
     If the application with given id does not exist, function returns None.
     :param app_id: str
-    :param get_url_func: Callable[[], str] - a function to generate connection string
+    :param get_url_func: a function to generate connection string
     :return: None | Application
     """
     engine = create_engine(get_url_func())
@@ -94,3 +97,31 @@ def token_has_access(token: str, access_level: BroadenAccessLevel) -> bool:
     except jwt.PyJWTError:
         return False
     return decoded_payload["access_level"] == access_level.value
+
+
+class ValidateHeader:
+    """
+    Validate Header with an instance of a class.
+    use case:
+    https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/
+    Specify security level for a router:
+    >>> from fastapi import APIRouter, Depends
+    >>> read_only_access_level = AccessLevel("Can_Read")
+    >>> router = APIRouter(
+    >>>     prefix="/items",
+    >>>     tags=["items"],
+    >>>     dependencies=[Depends(ValidateHeader(read_only_access_level))],
+    >>>     responses={404: {"description": "Not found"}},
+    >>>     )
+
+    TODO: HTTPException response schema does not match specification,
+        it returns {"detail": ...} json instead of {"success": False}
+        (priority - low)
+    """
+
+    def __init__(self, required_access_level: BroadenAccessLevel):
+        self.required_access_level = required_access_level
+
+    async def __call__(self, token: typing.Annotated[str, Header()]):
+        if not token_has_access(token, self.required_access_level):
+            raise HTTPException(status_code=403)
