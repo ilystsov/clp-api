@@ -1,20 +1,58 @@
-name: Python application
+name: Style, Security, Tests
 
 on: push
 
-permissions:
-  contents: read
-
 jobs:
-  build:
+  style_checks:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Check out repository
         uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: false
+      - name: Install dependencies
+        run: |
+          poetry install --no-root
+      - name: Style checking
+        run: |
+          make lint
 
-      - name: Build docker image
-        run: docker build -t tink-ab-hw8 .
+  security_checks:
+    needs: style_checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: false
+      - name: Install dependencies
+        run: |
+          poetry install --no-root
+      - name: Security checking
+        run: |
+          make security_checks
 
+  tests:
+    needs: style_checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Build image
+        run: |
+          docker build -t tests -f docker/tests/Dockerfile .
       - name: Run tests
-        run: docker run -t tink-ab-hw8 pytest
+        run: |
+          docker run --rm tests make test
