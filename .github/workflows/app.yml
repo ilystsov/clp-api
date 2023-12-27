@@ -1,37 +1,69 @@
-name: Code style, Tests, Security
+name: Style, Security, Tests
 
 on: push
 
-permissions:
-  contents: read
-
 jobs:
-  style_check:
+  style_checks:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [ "3.10" ]
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-      - name: Configure Poetry
-        run: |
-          poetry config virtualenvs.create false
+          python-version: "3.10"
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: false
       - name: Install dependencies
         run: |
           poetry install --no-root
       - name: Style checking
         run: |
           make lint
-      - name: Testing
+
+  security_checks:
+    needs: style_checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: false
+      - name: Install dependencies
         run: |
-          make test
-      - name: Security
+          poetry install --no-root
+      - name: Security checking
         run: |
           make security_checks
+
+  tests:
+    needs: style_checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: false
+      - name: Install dependencies
+        run: |
+          poetry install --no-root
+      - name: Build image
+        run: |
+          docker-compose build tests
+      - name: Run tests
+        run: |
+          docker-compose run tests make test
