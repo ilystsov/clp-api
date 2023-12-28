@@ -103,6 +103,10 @@ class ValidateHeader:
     def __init__(self, required_access_level: BroadenAccessLevel):
         self.required_access_level = required_access_level
 
-    async def __call__(self, token: typing.Annotated[str, Header()]):
+    async def __call__(
+        self, token: typing.Annotated[str | None, Header()] = None
+    ):
+        if token is None:
+            raise HTTPException(status_code=401)
         if not token_has_access(token, self.required_access_level):
             raise HTTPException(status_code=403)
