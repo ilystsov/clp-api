@@ -55,7 +55,7 @@ def test_token_has_access(token_data, test_case):
     _, __, token = token_data
     with patch(
         "src.homework.api.security.get_app_by_id",
-        lambda x, y: Application(
+        lambda x: Application(
             app_id="test" * 9, app_name="test", secret=test_case[1]
         ),
     ):

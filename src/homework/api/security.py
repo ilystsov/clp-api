@@ -8,7 +8,6 @@ import json
 from fastapi import Header, HTTPException
 
 from src.homework.api.contracts import AccessLevel
-from src.homework.db.connection_url import get_postgres_db_url
 from src.homework.db.crud import get_app_by_id
 
 
@@ -68,7 +67,7 @@ def token_has_access(token: str, access_level: BroadenAccessLevel) -> bool:
     payload = decode_segment(token.split(".")[1])
     if payload is None or payload.get("app_id") is None:
         return False
-    app = get_app_by_id(payload.get("app_id"), get_postgres_db_url)
+    app = get_app_by_id(payload.get("app_id"))
     if app is None:
         return False
     try:
