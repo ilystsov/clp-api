@@ -1,7 +1,6 @@
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.orm import Session
 import sqlalchemy.exc as exc
-from src.homework.api.contracts import AccessLevel
 from src.homework.db.models import Application
 from src.homework.db.engine import engine
 
@@ -45,3 +44,13 @@ def get_application_secret(app_id: str) -> None | str:
             return app.secret
     except (exc.SQLAlchemyError, exc.DBAPIError):
         return None
+
+
+def delete_application(app_id: str) -> bool:
+    try:
+        with Session(engine) as session:
+            session.execute(delete(Application).where(Application.app_id == app_id))
+            session.commit()
+    except (exc.SQLAlchemyError, exc.DBAPIError):
+        return False
+    return True

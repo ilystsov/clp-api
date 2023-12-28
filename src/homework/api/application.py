@@ -88,4 +88,13 @@ def modify_application(
 def delete_application(
     delete_request: DeleteApplicationRequest,
 ) -> ResponseStatus:
-    ...
+    """
+    Delete an application from the database.
+
+    Endpoint takes a DeleteApplicationRequest parameter
+    Endpoint returns ResponseStatus indicating either request
+    was successful or not.
+    """
+    if not crud.delete_application(delete_request.app_id):
+        return ResponseStatus(success=False)
+    return ResponseStatus(success=True)
