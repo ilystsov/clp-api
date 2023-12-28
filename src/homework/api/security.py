@@ -50,7 +50,7 @@ def decode_segment(segment: str) -> None | dict[str, str]:
     try:
         binary_decoded = base64.b64decode(segment + "==")
         jsonned_data = json.loads(binary_decoded.decode())
-    except (binascii.Error, json.JSONDecodeError):
+    except (binascii.Error, json.JSONDecodeError, UnicodeDecodeError):
         return None
     return jsonned_data
 
@@ -64,7 +64,10 @@ def token_has_access(token: str, access_level: BroadenAccessLevel) -> bool:
     :param access_level: BroadenAccessLevel
     :return: bool
     """
-    payload = decode_segment(token.split(".")[1])
+    try:
+        payload = decode_segment(token.split(".")[1])
+    except IndexError:
+        return False
     if payload is None or payload.get("app_id") is None:
         return False
     app = get_app_by_id(payload.get("app_id"))

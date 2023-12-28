@@ -23,12 +23,12 @@ def get_data_and_precalculated_jwt():
 def test_issue_token(token_data):
     data, secret, result = token_data
     assert (
-        security.issue_token(
-            data["app_id"],
-            security.MasterAccessLevel(data["access_level"]),
-            secret,
-        )
-        == result
+            security.issue_token(
+                data["app_id"],
+                security.MasterAccessLevel(data["access_level"]),
+                secret,
+            )
+            == result
     )
 
 
@@ -54,9 +54,15 @@ def test_decode_segment(token_data):
 def test_token_has_access(token_data, test_case):
     _, __, token = token_data
     with patch(
-        "src.homework.api.security.get_app_by_id",
-        lambda x: Application(
-            app_id="test" * 9, app_name="test", secret=test_case[1]
-        ),
+            "src.homework.api.security.get_app_by_id",
+            lambda x: Application(
+                app_id="test" * 9, app_name="test", secret=test_case[1]
+            ),
     ):
         assert security.token_has_access(token, test_case[0]) == test_case[2]
+
+
+@patch("src.homework.api.security.get_app_by_id", lambda x: None)
+def test_bad_token():
+    assert not security.token_has_access("test", security.MasterAccessLevel("MasterApp"))
+    assert not security.token_has_access("test.test.", security.MasterAccessLevel("MasterApp"))
