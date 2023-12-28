@@ -1,7 +1,7 @@
 from sqlalchemy import select, delete
 from sqlalchemy.orm import Session
 import sqlalchemy.exc as exc
-from src.homework.db.models import Application
+from src.homework.db.models import Application, User
 from src.homework.db.engine import engine
 
 
@@ -78,3 +78,23 @@ def delete_application(app_id: str) -> bool:
     except (exc.SQLAlchemyError, exc.DBAPIError):
         return False
     return True
+
+
+def get_user_balance_by_id(user_id: int) -> None | int:
+    """
+    Get the user's balance from the database by their id.
+
+    If the user with given user ID does not exist, function returns None.
+    :param user_id: int
+    :return: None | int
+    """
+    with Session(engine) as session:
+        try:
+            balance = session.scalar(
+                select(User.current_balance).where(User.user_id == user_id)
+            )
+            if balance is None:
+                return None
+            return balance
+        except (exc.SQLAlchemyError, exc.DBAPIError):
+            return None
