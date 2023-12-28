@@ -76,4 +76,4 @@ jobs:
           docker-compose build tests
       - name: Run tests
         run: |
-          docker-compose run tests
+          docker-compose run tests make func_tests
