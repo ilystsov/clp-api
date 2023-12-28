@@ -25,5 +25,6 @@ def test_add_select_app(eng):
                 Application.app_name == "test1"
             )
         )
+        session.commit()
         assert selected_app is not None
         assert selected_app.app_id == app1.app_id
