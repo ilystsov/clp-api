@@ -60,3 +60,13 @@ def test_token_has_access(token_data, test_case):
         ),
     ):
         assert security.token_has_access(token, test_case[0]) == test_case[2]
+
+
+@patch("src.homework.api.security.get_app_by_id", lambda x: None)
+def test_bad_token():
+    assert not security.token_has_access(
+        "test", security.MasterAccessLevel("MasterApp")
+    )
+    assert not security.token_has_access(
+        "test.test.", security.MasterAccessLevel("MasterApp")
+    )
