@@ -23,7 +23,7 @@ router = fastapi.APIRouter(
 
 
 @router.post("/application")
-def create_application(
+async def create_application(
     creation_request: CreateApplicationRequest,
 ) -> ApplicationDataResponse | ResponseStatus:
     """
@@ -56,7 +56,7 @@ def create_application(
 
 
 @router.put("/application")
-def modify_application(
+async def modify_application(
     update_request: UpdateApplicationRequest,
 ) -> ApplicationDataResponse | ResponseStatus:
     """
@@ -85,7 +85,7 @@ def modify_application(
 
 
 @router.delete("/application")
-def delete_application(
+async def delete_application(
     delete_request: DeleteApplicationRequest,
 ) -> ResponseStatus:
     """
