@@ -1,6 +1,4 @@
-import typing
-
-from sqlalchemy import create_engine, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from src.homework.db.models import Application
