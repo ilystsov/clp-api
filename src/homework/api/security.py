@@ -8,7 +8,7 @@ import json
 from fastapi import Header, HTTPException
 
 from src.homework.api.contracts import AccessLevel
-from src.homework.db.engine import get_postgres_db_url
+from src.homework.db.connection_url import get_postgres_db_url
 from src.homework.db.crud import get_app_by_id
 
 
