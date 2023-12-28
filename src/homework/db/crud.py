@@ -25,8 +25,8 @@ def create_application(app_id: str, app_name: str, secret: str) -> bool:
     Create an application in the database.
 
     :param app_id: uuid 4 format string
-    :param app_name: 30-charachter length string
-    :param secret: 64-charachter length string
+    :param app_name: 30-character length string
+    :param secret: 64-character length string
     :return: bool indicating success of creation
     """
     try:
@@ -45,10 +45,10 @@ def create_application(app_id: str, app_name: str, secret: str) -> bool:
 
 def get_application_secret(app_id: str) -> None | str:
     """
-    Get a secret if app exists, and None othervise.
+    Get a secret if app exists, and None otherwise.
 
     :param app_id: uuid 4 format string
-    :return: None | 64-charachter string
+    :return: None | 64-character string
     """
     try:
         with Session(engine) as session:

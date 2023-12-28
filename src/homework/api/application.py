@@ -31,8 +31,8 @@ async def create_application(
 
     Endpoint takes a CreateApplicationRequest parameter
     Endpoint returns ApplicationDataResponse if
-    application was created succesfully, and
-    ResponseStatus otherise.
+    application was created successfully, and
+    ResponseStatus otherwise.
     """
 
     app_id, secret = str(uuid4()), token_hex(32)
@@ -64,8 +64,8 @@ async def modify_application(
 
     Endpoint takes a UpdateApplicationRequest parameter
     Endpoint returns ApplicationDataResponse if
-    application was created succesfully, and
-    ResponseStatus otherise.
+    application was created successfully, and
+    ResponseStatus otherwise.
 
     Technical Note: Modification is stored only in JWT, therefore,
     endpoint is a good way to broaden the access for the application.
