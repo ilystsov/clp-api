@@ -16,8 +16,14 @@ def db_creation():
 
 def test_add_select_app(eng):
     with Session(eng) as session:
-        app1 = Application(app_id=uuid.uuid4(), app_name="test1", secret="secret")
+        app1 = Application(
+            app_id=uuid.uuid4(), app_name="test1", secret="secret"
+        )
         session.add(app1)
-        selected_app = session.scalar(sqlalchemy.select(Application).where(Application.app_name == "test1"))
+        selected_app = session.scalar(
+            sqlalchemy.select(Application).where(
+                Application.app_name == "test1"
+            )
+        )
         assert selected_app is not None
         assert selected_app.app_id == app1.app_id
