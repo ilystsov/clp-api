@@ -14,8 +14,9 @@ RUN pip install poetry
 COPY Makefile /opt/app/
 
 # Copy only requirements to cache them in docker layer
-COPY pyproject.toml poetry.lock src tests ./
-
+COPY pyproject.toml poetry.lock ./
+COPY src ./src
+COPY tests ./tests
 # Project initialization:
 RUN poetry config virtualenvs.create false \
     && poetry install
