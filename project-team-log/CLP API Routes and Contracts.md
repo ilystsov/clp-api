@@ -36,7 +36,7 @@ Note: All API calls require TOKEN: <token_value> header. All communications are 
 2. /user - to use the endpoint, the application must have `Can_Read` access level.
    1. GET request - retrieve current user's balance
       1. Request Parameters (UserBalanceRequest):
-         * user_id - int (passed as a query parameter in the URL, e.g., /user?UserID=123)
+         * user_id - int (passed as a query parameter in the URL, e.g., /user?user_id=123)
       2. General Response body (ResponseStatus):
          * success - bool
       3. Successful Response body (UserBalanceResponse):
