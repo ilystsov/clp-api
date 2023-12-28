@@ -5,13 +5,11 @@ import jwt
 import base64
 import json
 
-from sqlalchemy import create_engine, select
-from sqlalchemy.orm import Session
 from fastapi import Header, HTTPException
 
 from src.homework.api.contracts import AccessLevel
 from src.homework.db.engine import get_postgres_db_url
-from src.homework.db.models import Application
+from src.homework.db.crud import get_app_by_id
 
 
 class MasterAccessLevel(enum.Enum):
@@ -39,30 +37,11 @@ def issue_token(
     )
 
 
-def verify_token(token: str, supposed_secret: str) -> typing.Dict[str, str]:
+def verify_token(token: str, supposed_secret: str) -> dict[str, str]:
     return jwt.decode(token, supposed_secret, algorithms="HS256")
 
 
-def get_app_by_id(
-    app_id: str, get_url_func: typing.Callable[[], str]
-) -> None | Application:
-    """
-    Get an application from the database by its id.
-
-    If the application with given id does not exist, function returns None.
-    :param app_id: str
-    :param get_url_func: a function to generate connection string
-    :return: None | Application
-    """
-    engine = create_engine(get_url_func())
-    with Session(engine) as session:
-        app = session.scalar(
-            select(Application).where(Application.app_id == app_id)
-        )
-        return app
-
-
-def decode_segment(segment: str) -> None | typing.Dict[str, str]:
+def decode_segment(segment: str) -> None | dict[str, str]:
     """
     Decode a given segment of the JWT.
 
