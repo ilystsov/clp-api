@@ -17,6 +17,7 @@ COPY Makefile /opt/app/
 COPY pyproject.toml poetry.lock ./
 COPY src ./src
 COPY tests ./tests
+COPY func_tests ./func_tests
 # Project initialization:
 RUN poetry config virtualenvs.create false \
     && poetry install
