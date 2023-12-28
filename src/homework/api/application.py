@@ -6,7 +6,7 @@ from src.homework.api.contracts import (
     UpdateApplicationRequest,
     DeleteApplicationRequest,
     ResponseStatus,
-    CreateApplicationResponse,
+    ApplicationDataResponse,
 )
 from src.homework.api.security import (
     ValidateHeader,
@@ -25,7 +25,7 @@ router = fastapi.APIRouter(
 @router.post("/application")
 def create_application(
     creation_request: CreateApplicationRequest,
-) -> CreateApplicationResponse | ResponseStatus:
+) -> ApplicationDataResponse | ResponseStatus:
     """
     Create a new application using MasterApp.
 
@@ -44,7 +44,7 @@ def create_application(
     ):
         return ResponseStatus(success=False)
 
-    return CreateApplicationResponse(
+    return ApplicationDataResponse(
         success=True,
         app_id=app_id,
         token=issue_token(
@@ -58,8 +58,19 @@ def create_application(
 @router.put("/application")
 def modify_application(
     update_request: UpdateApplicationRequest,
-) -> ResponseStatus:
-    ...
+) -> ApplicationDataResponse | ResponseStatus:
+    secret = crud.get_application_secret(update_request.app_id)
+    if secret is None:
+        return ResponseStatus(success=False)
+    return ApplicationDataResponse(
+        success=True,
+        app_id=update_request.app_id,
+        token=issue_token(
+            app_id=update_request.app_id,
+            access_level=update_request.new_access_level,
+            secret=secret,
+        ),
+    )
 
 
 @router.delete("/application")

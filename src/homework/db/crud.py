@@ -1,6 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 import sqlalchemy.exc as exc
+from src.homework.api.contracts import AccessLevel
 from src.homework.db.models import Application
 from src.homework.db.engine import engine
 
@@ -33,3 +34,14 @@ def create_application(app_id: str, app_name: str, secret: str) -> bool:
     except (exc.SQLAlchemyError, exc.DBAPIError):
         return False
     return True
+
+
+def get_application_secret(app_id: str) -> None | str:
+    try:
+        with Session(engine) as session:
+            app = session.scalar(select(Application).where(Application.app_id == app_id))
+            if app is None:
+                return None
+            return app.secret
+    except (exc.SQLAlchemyError, exc.DBAPIError):
+        return None
