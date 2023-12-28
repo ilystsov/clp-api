@@ -44,7 +44,7 @@ class ResponseStatus(BaseModel):
     success: bool
 
 
-class CreateApplicationResponse(ResponseStatus):
+class ApplicationDataResponse(ResponseStatus):
     app_id: str
     token: str
 
