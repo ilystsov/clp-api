@@ -37,7 +37,7 @@ Deleted order means that the customer returned the item, thus we penalise custom
 However, penalty starts only if more than 20% of orders were returned.
 ### 4. Database Design
 
-![](DBModel.png)
+![](DBModelRevised.png)
 ### 5. Suggested Stack
 1. FastAPI
 2. SQLAlchemy (Postgres)
