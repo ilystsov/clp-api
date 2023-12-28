@@ -1,13 +1,13 @@
 ## Supported endpoints:
 Note: All API calls require TOKEN: <token_value> header. All communications are performed with the application/json content type.
 1. /application - to use the endpoint, the application must have `MasterApp` access level.
-   1. POST request - create a new application: CreateApplicationRequest -> CreateApplicationResponse
+   1. POST request - create a new application: CreateApplicationRequest -> ApplicationDataResponse
       1. Request body:
          * application_name - str (30 chars)
          * access_level - Enum[`Can_Read`, `Can_Modify_Orders`]
       2. General Response body (ResponseStatus):
          * success - bool
-      3. Successful Response body (CreateApplicationResponse):
+      3. Successful Response body (ApplicationDataResponse):
          * app_id - str
          * Token - str
       4. Returned errors:
@@ -17,9 +17,12 @@ Note: All API calls require TOKEN: <token_value> header. All communications are 
       1. Request body:
          * app_id - str
          * new_access_level - Enum[`Can_Read`, `Can_Modify_Orders`]
-      2. Response body (ResponseStatus):
-         * success: bool
-      3. Returned errors:
+      2. General Response body (ResponseStatus):
+         * success - bool
+      3. Successful Response body (ApplicationDataResponse):
+         * app_id - str
+         * Token - str
+      4. Returned errors:
          * 401 Unauthorized - if no token provided
          * 403 Forbidden - if the app does not have a sufficient access level
    3. DELETE Request - delete existing application: DeleteApplicationRequest -> ResponseStatus
@@ -87,7 +90,7 @@ Note: All API calls require TOKEN: <token_value> header. All communications are 
 2. Response Contracts:
    1. ResponseStatus:
       * success - bool
-   2. CreateApplicationResponse(ResponseStatus):
+   2. ApplicationDataResponse(ResponseStatus):
       * app_id - str
       * token - str
    3. UserBalanceResponse(ResponseStatus):
