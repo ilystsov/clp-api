@@ -30,7 +30,7 @@ def create_application(
     Create a new application using MasterApp.
 
     Endpoint takes a CreateApplicationRequest parameter
-    Endpoint returns CreateApplicationResponse if
+    Endpoint returns ApplicationDataResponse if
     application was created succesfully, and
     ResponseStatus otherise.
     """
@@ -59,6 +59,17 @@ def create_application(
 def modify_application(
     update_request: UpdateApplicationRequest,
 ) -> ApplicationDataResponse | ResponseStatus:
+    """
+    Create another application access_level.
+
+    Endpoint takes a UpdateApplicationRequest parameter
+    Endpoint returns ApplicationDataResponse if
+    application was created succesfully, and
+    ResponseStatus otherise.
+
+    Technical Note: Modification is stored only in JWT, therefore,
+    endpoint is a good way to broaden the access for the application.
+    """
     secret = crud.get_application_secret(update_request.app_id)
     if secret is None:
         return ResponseStatus(success=False)
