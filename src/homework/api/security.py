@@ -94,10 +94,6 @@ class ValidateHeader:
     >>>     dependencies=[Depends(ValidateHeader(read_only_access_level))],
     >>>     responses={404: {"description": "Not found"}},
     >>>     )
-
-    TODO: HTTPException response schema does not match specification,
-        it returns {"detail": ...} json instead of {"success": False}
-        (priority - low)
     """
 
     def __init__(self, required_access_level: BroadenAccessLevel):
