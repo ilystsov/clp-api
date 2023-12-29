@@ -3,12 +3,13 @@ import uuid
 import pytest
 from sqlalchemy.orm import Session
 from fastapi.testclient import TestClient
-from src.homework.db.models import Application
+from src.homework.app import create_app
 from src.homework.api.security import (
     issue_token,
     MasterAccessLevel,
 )
-from src.homework.app import create_app
+from src.homework.api.contracts import AccessLevel
+from src.homework.db.models import Application
 from src.homework.db.engine import engine
 from src.homework.db.models import Base
 
@@ -31,7 +32,9 @@ def create_client(eng):
 def insert_app(eng):
     with Session(eng) as session:
         app_id, secret = uuid.uuid4(), "secret"
-        new_app = Application(app_id=app_id, app_name="test", secret=secret)
+        new_app = Application(
+            app_id=app_id, app_name=str(app_id)[:30], secret=secret
+        )
         session.add(new_app)
         session.commit()
     yield str(app_id), secret
@@ -43,4 +46,22 @@ def create_master_app(inserted_app):
         app_id=inserted_app[0],
         secret=inserted_app[1],
         access_level=MasterAccessLevel("MasterApp"),
+    )
+
+
+@pytest.fixture(name="read_app")
+def create_read_app(inserted_app):
+    yield inserted_app[0], issue_token(
+        app_id=inserted_app[0],
+        secret=inserted_app[1],
+        access_level=AccessLevel("Can_Read"),
+    )
+
+
+@pytest.fixture(name="modify_app")
+def create_modify_app(inserted_app):
+    yield inserted_app[0], issue_token(
+        app_id=inserted_app[0],
+        secret=inserted_app[1],
+        access_level=AccessLevel("Can_Modify_Orders"),
     )
