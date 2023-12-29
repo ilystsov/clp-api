@@ -1,46 +1,11 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/XssgbD9G)
-# Разработка в команде
+# CLP API Project Overview
 
-![][img]
+## Tinkoff Backend Academy - Team Development Assignment 14
 
-## I. Практическое задание (оно же ДЗ)
+Welcome to the CLP API project. Below is a guide to various documentation and resources within the project.
 
-1. Разбивка на команды (2-3 человека).
-2. Состав проекта:
-   - REST API (любой фреймворк)
-   - БД (любая, но лучше Postgres)
-   - Tests
-   - Poetry
-   - Docker
-   - Type hints
-   - Linters (можно ruff)
-   - Github Actions pipeline
-3. Распределение ролей в команде и создание backlog'a задач.
-4. Работа над заданиями в соответствии с ролями и ответственностями.
-5. Применение практик совместной работы:
-   - создание веток в репозитории
-   - pull requests
-   - code review
-   - bug fixing
-   - рефакторинг
-6. Ретроспектива и обсуждение:
-   - Что получилось хорошо?
-   - Где возникли сложности?
-   - Как совместную работу можно улучшить?
-
-## Критерии успеха:
-
-- Учтено всё, что описано выше (в первую очередь из пункта 2)
-- Работающий API сервис с основным функционалом.
-- Приложение должно быть упаковано в Docker контейнер для легкого развертывания.
-- Использование poetry для управления зависимостями.
-- Отсутствие ошибок линтера ruff.
-- Написание документации к API (описание эндпоинтов, методов и форматов данных).
-- Наличие автоматических тестов, покрывающих основную функциональность.
-- Покрытие тестами не менее 80%.
-
-Максимальный бал за ДЗ - 10.
-
----
-
-[img]: assets/img/img.png
+- **[Project Description](https://github.com/central-university-dev/2023-autumn-ab-python-hw-14-team-dev-younggentech/blob/main/project-team-log/ProjectSuggestions.md)**: An overview and outline of the project.
+- **[CLP API Routes and Contracts](https://github.com/central-university-dev/2023-autumn-ab-python-hw-14-team-dev-younggentech/blob/main/project-team-log/CLP%20API%20Routes%20and%20Contracts.md)**: Details on our API endpoints and their contracts.
+- **[Project Backlog](https://github.com/central-university-dev/2023-autumn-ab-python-hw-14-team-dev-younggentech/blob/main/project-team-log/ProjectBacklog.md)**: Outline of tasks and progress of the project.
+- **[Role Distribution](https://github.com/central-university-dev/2023-autumn-ab-python-hw-14-team-dev-younggentech/blob/main/project-team-log/RoleDistribution.md)**: Descriptions of team roles and responsibilities.
+- **[Retrospective](https://github.com/central-university-dev/2023-autumn-ab-python-hw-14-team-dev-younggentech/blob/main/project-team-log/Retrospective.md)**: Reflections on our teamwork.
