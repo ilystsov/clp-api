@@ -43,8 +43,8 @@
 *Note: tests must interact with a running database.  Test coverage must be >= 80%.*
 
 ### Refinement
-- [ ] Refactor the code with respect to the open GitHub issues.
-- [ ] Edit GitHub repository (create ReadMe, edit file names).
+- [x] Refactor the code with respect to the open GitHub technical debt issues.
+- [x] Edit GitHub repository (create ReadMe, edit file names).
 
 ### Project Retrospective
-- [ ] Review team interaction successes and challenges.
+- [x] Review team interaction successes and challenges.
