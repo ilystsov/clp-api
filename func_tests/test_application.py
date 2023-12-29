@@ -13,6 +13,19 @@ from func_tests.general_fixtures import (  # noqa: F401
 )
 
 
+@pytest.mark.parametrize("req_type", ["post", "put", "delete"])
+@pytest.mark.parametrize("created_app", ["read_app", "modify_app"])
+def test_ivalid_access_level_token(created_app, client, request, req_type):
+    created_app = request.getfixturevalue(created_app)
+    response = client.request(
+        req_type,
+        "/application",
+        headers={"token": created_app[1]},
+        json={"application_name": "test", "access_level": "NotMatter"},
+    )
+    assert response.status_code == 403
+
+
 @pytest.mark.parametrize("access_level", ["Can_Read", "Can_Modify_Orders"])
 def test_app_creation(client, master_app, eng, access_level):
     response = client.post(
@@ -40,7 +53,7 @@ def test_app_creation(client, master_app, eng, access_level):
     "acces_level,created_app",
     [("Can_Read", "read_app"), ("Can_Modify_Orders", "modify_app")],
 )
-def test_read_to_modify(client, master_app, acces_level, created_app, request):
+def test_modify_app(client, master_app, acces_level, created_app, request):
     created_app = request.getfixturevalue(created_app)
     response = client.put(
         "/application",
@@ -58,3 +71,31 @@ def test_read_to_modify(client, master_app, acces_level, created_app, request):
         "app_id": created_app[0],
         "access_level": "Can_Modify_Orders",
     }
+
+
+@pytest.mark.parametrize(
+    "acces_level,created_app",
+    [("Can_Read", "read_app"), ("Can_Modify_Orders", "modify_app")],
+)
+def test_delete_app(
+    client, master_app, acces_level, created_app, request, eng
+):
+    created_app = request.getfixturevalue(created_app)
+    response = client.request(
+        "delete",
+        "/application",
+        headers={"token": master_app},
+        json={
+            "app_id": created_app[0],
+            "new_access_level": "Can_Modify_Orders",
+        },
+    )
+    assert response.status_code == 200
+    assert response.json()["success"]
+    with Session(eng) as session:
+        app = session.scalar(
+            sqlalchemy.select(Application).where(
+                Application.app_id == created_app[0]
+            )
+        )
+        assert app is None
