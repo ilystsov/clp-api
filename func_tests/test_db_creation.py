@@ -1,17 +1,9 @@
 import uuid
 
-import pytest
 import sqlalchemy
 from sqlalchemy.orm import Session
-from src.homework.db.engine import engine
-from src.homework.db.models import Base, Application
-
-
-@pytest.fixture(name="eng")
-def db_creation():
-    Base.metadata.create_all(engine)
-    yield engine
-    Base.metadata.drop_all(engine)
+from src.homework.db.models import Application
+from func_tests.general_fixtures import create_db  # noqa: F401
 
 
 def test_database_works_correctly(eng):
