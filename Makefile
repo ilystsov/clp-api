@@ -5,7 +5,7 @@ FUNC_TEST_FOLDER := func_tests
 .PHONY: test format lint security_checks func_tests
 
 test:
-	poetry run pytest $(TEST_FOLDER) --cov=$(CODE_FOLDERS) --ignore=${FUNC_TEST_FOLDER}
+	poetry run pytest $(TEST_FOLDER) --cov=$(CODE_FOLDERS) --ignore=${FUNC_TEST_FOLDER} --cov-fail-under=80
 
 format:
 	poetry run black --line-length 79 .
