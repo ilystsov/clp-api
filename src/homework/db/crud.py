@@ -1,7 +1,7 @@
 from sqlalchemy import select, delete
 from sqlalchemy.orm import Session
 import sqlalchemy.exc as exc
-from src.homework.db.models import Application, User
+from src.homework.db.models import Application, User, Order
 from src.homework.db.engine import engine
 
 
@@ -98,3 +98,85 @@ def get_user_balance_by_id(user_id: int) -> None | int:
             return balance
         except (exc.SQLAlchemyError, exc.DBAPIError):
             return None
+
+
+def calculate_new_points(
+    total_cost: int, num_of_deleted_orders: int, total_num_of_orders: int
+) -> int:
+    """
+    Calculate the number of additional points.
+
+    :param total_cost: int
+    :param num_of_deleted_orders: int
+    :param total_num_of_orders: int
+    :return: int
+    """
+    normal_coef = min(
+        1, 1.2 - num_of_deleted_orders / (total_num_of_orders + 1)
+    )
+    new_points = total_cost * 0.05 * normal_coef
+    return int(new_points)
+
+
+def create_order_update_balance(
+    order_id: int, user_id: int, total_cost: int, completed_at: int
+) -> bool:
+    """
+    Create a new order entry in the database
+    and update user's balance.
+
+    :param order_id: int
+    :param user_id: int
+    :param total_cost: int
+    :param completed_at: int
+    :return: bool indicating operation's result
+    """
+    try:
+        new_order = Order(
+            order_id=order_id,
+            user_id=user_id,
+            total_cost=total_cost,
+            completed_at=completed_at,
+        )
+        with Session(engine) as session:
+            session.add(new_order)
+            session.commit()
+
+        with Session(engine) as session:
+            user = session.scalar(select(User).where(User.user_id == user_id))
+            total_num_of_orders = len(user.orders)
+            num_of_deleted_orders = user.num_of_deleted_orders
+
+            new_points = calculate_new_points(
+                total_cost, num_of_deleted_orders, total_num_of_orders
+            )
+            user.current_balance += new_points
+            session.commit()
+    except (exc.SQLAlchemyError, exc.DBAPIError):
+        return False
+    return True
+
+
+def delete_order(order_id: int) -> bool:
+    """
+    Delete an order and get result of the operation.
+
+    :param order_id: int
+    :return: bool indicating operation's result
+    """
+    try:
+        with Session(engine) as session:
+            order = session.scalar(
+                select(Order).where(Order.order_id == order_id)
+            )
+            user = session.scalar(
+                select(User).where(User.user_id == order.user_id)
+            )
+
+            session.delete(order)
+            user.num_of_deleted_orders += 1
+
+            session.commit()
+    except (exc.SQLAlchemyError, exc.DBAPIError):
+        return False
+    return True
