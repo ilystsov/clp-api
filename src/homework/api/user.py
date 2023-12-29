@@ -1,7 +1,11 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
-from .contracts import UserBalanceResponse, UserBalanceRequest, AccessLevel
-from .security import ValidateHeader
+from src.homework.api.contracts import (
+    UserBalanceResponse,
+    UserBalanceRequest,
+    AccessLevel,
+)
+from src.homework.api.security import ValidateHeader
 import src.homework.db.crud as crud
 
 
@@ -15,7 +19,7 @@ async def get_balance(
     user_id: Annotated[UserBalanceRequest, Depends()]
 ) -> UserBalanceResponse:
     """
-    Get user's balance.
+    Get the user's balance.
 
     Endpoint takes a UserBalanceRequest URL parameter
     Endpoint returns UserBalanceResponse if

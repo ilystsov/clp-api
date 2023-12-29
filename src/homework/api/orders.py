@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends
-from .contracts import (
+from src.homework.api.contracts import (
     AccessLevel,
     CreateOrderRequest,
     ResponseStatus,
     DeleteOrderRequest,
 )
-from .security import ValidateHeader
+from src.homework.api.security import ValidateHeader
 import src.homework.db.crud as crud
 
 
