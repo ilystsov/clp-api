@@ -84,7 +84,7 @@ def get_user_balance_by_id(user_id: int) -> None | int:
     """
     Get the user's balance from the database by their id.
 
-    If the user with given user ID does not exist, function returns None.
+    If the user with given user_id does not exist, function returns None.
     :param user_id: int
     :return: None | int
     """
@@ -93,8 +93,6 @@ def get_user_balance_by_id(user_id: int) -> None | int:
             balance = session.scalar(
                 select(User.current_balance).where(User.user_id == user_id)
             )
-            if balance is None:
-                return None
             return balance
         except (exc.SQLAlchemyError, exc.DBAPIError):
             return None
