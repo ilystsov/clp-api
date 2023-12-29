@@ -87,7 +87,6 @@ def test_delete_app(
         headers={"token": master_app},
         json={
             "app_id": created_app[0],
-            "new_access_level": "Can_Modify_Orders",
         },
     )
     assert response.status_code == 200
