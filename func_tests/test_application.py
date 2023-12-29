@@ -15,7 +15,7 @@ from func_tests.general_fixtures import (  # noqa: F401
 
 @pytest.mark.parametrize("req_type", ["post", "put", "delete"])
 @pytest.mark.parametrize("created_app", ["read_app", "modify_app"])
-def test_ivalid_access_level_token(created_app, client, request, req_type):
+def test_invalid_access_level_token(created_app, client, request, req_type):
     created_app = request.getfixturevalue(created_app)
     response = client.request(
         req_type,
@@ -37,23 +37,23 @@ def test_app_creation(client, master_app, eng, access_level):
     jsonned_resp = response.json()
     assert jsonned_resp.get("success")
     with Session(eng) as session:
-        selectet_app = session.scalar(
+        selected_app = session.scalar(
             sqlalchemy.select(Application).where(
                 Application.app_name == access_level
             )
         )
-        assert selectet_app is not None
-        assert str(selectet_app.app_id) == jsonned_resp.get("app_id")
+        assert selected_app is not None
+        assert str(selected_app.app_id) == jsonned_resp.get("app_id")
         assert verify_token(
-            jsonned_resp.get("token"), selectet_app.secret
+            jsonned_resp.get("token"), selected_app.secret
         ) == {"app_id": jsonned_resp["app_id"], "access_level": access_level}
 
 
 @pytest.mark.parametrize(
-    "acces_level,created_app",
+    "access_level,created_app",
     [("Can_Read", "read_app"), ("Can_Modify_Orders", "modify_app")],
 )
-def test_modify_app(client, master_app, acces_level, created_app, request):
+def test_modify_app(client, master_app, access_level, created_app, request):
     created_app = request.getfixturevalue(created_app)
     response = client.put(
         "/application",
@@ -74,11 +74,11 @@ def test_modify_app(client, master_app, acces_level, created_app, request):
 
 
 @pytest.mark.parametrize(
-    "acces_level,created_app",
+    "access_level,created_app",
     [("Can_Read", "read_app"), ("Can_Modify_Orders", "modify_app")],
 )
 def test_delete_app(
-    client, master_app, acces_level, created_app, request, eng
+    client, master_app, access_level, created_app, request, eng
 ):
     created_app = request.getfixturevalue(created_app)
     response = client.request(
