@@ -16,7 +16,7 @@ COPY Makefile /opt/app/
 # Copy only requirements to cache them in docker layer
 COPY pyproject.toml poetry.lock ./
 COPY src ./src
-COPY tests ./tests
+COPY unit_tests ./unit_tests
 COPY func_tests ./func_tests
 # Project initialization:
 RUN poetry config virtualenvs.create false \

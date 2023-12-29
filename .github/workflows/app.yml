@@ -55,7 +55,7 @@ jobs:
           docker build -t tests -f docker/tests/Dockerfile .
       - name: Run tests
         run: |
-          docker run --rm tests make test
+          docker run --rm tests make unit_tests
 
   functional_tests:
     needs: unit_tests
