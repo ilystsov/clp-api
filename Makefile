@@ -19,4 +19,4 @@ security_checks:
 	poetry run bandit -r $(CODE_FOLDERS)
 
 func_tests:
-	poetry run pytest $(FUNC_TEST_FOLDER) --cov=$(CODE_FOLDERS) --ignore=${TEST_FOLDER}
+	poetry run pytest $(FUNC_TEST_FOLDER) --cov=$(CODE_FOLDERS) --ignore=${TEST_FOLDER} --cov-fail-under=80
